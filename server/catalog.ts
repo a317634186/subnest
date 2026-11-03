@@ -8,7 +8,7 @@ import { AppError, type Supplier } from './types.js';
 export const customProductSchema = z.object({
   name: z.string().trim().min(1).max(100), nameEn: z.string().trim().max(100).default(''),
   description: z.string().trim().min(1).max(4000), descriptionEn: z.string().max(4000).default(''),
-  category: z.enum(['ai', 'streaming', 'design', 'tools', 'gaming', 'services']),
+  category: z.enum(['ai', 'streaming', 'design', 'tools', 'gaming', 'services', 'vpn']),
   priceCents: z.number().int().min(1).max(10000000), delivery: z.enum(['instant', 'manual']),
   requiresEmail: z.boolean().default(false), enabled: z.boolean().default(true),
 });
@@ -75,12 +75,14 @@ function matchProductStyleText(n: string, inputKind = ''): [string, string] {
   if (/microsoft|office/.test(n)) return ['tools', 'office'];
   if (/windows/.test(n)) return ['tools', 'windows'];
   if (/zoom/.test(n)) return ['tools', 'zoom'];
-  if (/nordvpn|\bnord\b/.test(n)) return ['tools', 'nordvpn'];
-  if (/expressvpn/.test(n)) return ['tools', 'expressvpn'];
-  if (/surfshark/.test(n)) return ['tools', 'surfshark'];
-  if (/kaspersky|avira|norton/.test(n)) return ['tools', 'kaspersky'];
-  if (/proton/.test(n)) return ['tools', 'proton'];
-  if (/hma|adguard|ipvanish|purevpn|v2ray|proxyscrape|proxy|vpn/.test(n)) return ['tools', 'vpn'];
+  if (/nordvpn|\bnord\b/.test(n)) return ['vpn', 'nordvpn'];
+  if (/expressvpn/.test(n)) return ['vpn', 'expressvpn'];
+  if (/surfshark/.test(n)) return ['vpn', 'surfshark'];
+  if (/avira/.test(n)) return ['vpn', 'avira'];
+  if (/kaspersky/.test(n)) return ['vpn', 'kaspersky'];
+  if (/norton/.test(n)) return ['vpn', 'norton'];
+  if (/proton/.test(n)) return ['vpn', 'proton'];
+  if (/hma|adguard|ipvanish|purevpn|v2ray|proxyscrape|proxy|vpn/.test(n)) return ['vpn', 'vpn'];
   if (/gpm/.test(n)) return ['tools', 'gpm'];
   if (/duolingo|memrise/.test(n)) return ['tools', 'duolingo'];
   if (/coursera|edx|udemy|skillshare/.test(n)) return ['tools', 'coursera'];
@@ -199,14 +201,14 @@ export class Catalog {
     if (!p) throw new AppError(404, '商品不存在', 'PRODUCT_NOT_FOUND');
     return p;
   }
-  publicProduct(p: ProductRow, stockMap?: Map<string, number>) {
+  publicProduct(p: ProductRow, stockMap?: Map<string, number>, soldMap?: Map<string, number>) {
     const stock = p.provider === 'local' && p.delivery === 'instant' ? (stockMap ? (stockMap.get(p.id) ?? 0) : this.store.get<{n:number}>('SELECT COUNT(*) AS n FROM inventory WHERE product_id=? AND order_id IS NULL', p.id)!.n) : null;
     const [, detectedBrand] = detectProductStyle(`${p.name} ${p.name_en}`, p.input_kind);
     return { id: p.id, name: p.name, nameEn: p.name_en, description: p.description, descriptionEn: p.description_en,
       category: p.category, brand: p.brand && p.brand !== 'generic' ? p.brand : detectedBrand, priceCents: p.price_cents, inStock: stock === null ? !!p.in_stock : stock > 0,
       requiresEmail: !!p.requires_email, delivery: p.delivery, demo: p.provider !== 'local' && p.source_mode === 'demo', stock,
       maxQuantity: this.providers.get(p.provider)?.maxQuantity ?? 20,
-      inputKind:p.input_kind,
+      inputKind:p.input_kind, updatedAt:p.updated_at, soldCount:soldMap?.get(p.id) ?? 0,
     };
   }
   list(admin = false) {
@@ -218,7 +220,8 @@ export class Catalog {
       names.set("prodseller", psName);
     }
     const stockMap = new Map(this.store.all<{product_id:string;n:number}>('SELECT product_id, COUNT(*) AS n FROM inventory WHERE order_id IS NULL GROUP BY product_id').map(r => [r.product_id, r.n]));
-    return this.store.all<ProductRow>(`SELECT * FROM products WHERE (provider='local' OR (provider='prodseller' AND source_mode=? AND ?=1) OR (provider!='prodseller' AND provider!='local' AND source_mode='live' AND EXISTS (SELECT 1 FROM supplier_connections s WHERE s.id=products.provider ${admin ? '' : 'AND s.enabled=1'}))) ${admin ? '' : 'AND enabled=1'} ORDER BY rowid`, this.config.PRODSELLER_MODE, +showSupplier).map(p => ({ ...this.publicProduct(p, stockMap), ...(admin ? { provider: p.provider, providerName:names.get(p.provider), sourceId: p.source_id, enabled: !!p.enabled, costUsdt: p.cost_usdt } : {}) }));
+    const soldMap = new Map(this.store.all<{product_id:string;n:number}>("SELECT product_id, SUM(quantity) AS n FROM orders WHERE payment_status='paid' GROUP BY product_id").map(r => [r.product_id, r.n]));
+    return this.store.all<ProductRow>(`SELECT * FROM products WHERE (provider='local' OR (provider='prodseller' AND source_mode=? AND ?=1) OR (provider!='prodseller' AND provider!='local' AND source_mode='live' AND EXISTS (SELECT 1 FROM supplier_connections s WHERE s.id=products.provider ${admin ? '' : 'AND s.enabled=1'}))) ${admin ? '' : 'AND enabled=1'} ORDER BY rowid`, this.config.PRODSELLER_MODE, +showSupplier).map(p => ({ ...this.publicProduct(p, stockMap, soldMap), ...(admin ? { provider: p.provider, providerName:names.get(p.provider), sourceId: p.source_id, enabled: !!p.enabled, costUsdt: p.cost_usdt } : {}) }));
   }
   create(input: z.infer<typeof customProductSchema>) {
     const id = `local-${randomUUID()}`;

@@ -83,6 +83,7 @@ export function createApp(config: Config, supplied?: Supplier, providerFactory: 
   // Register additional API adapters here; each implements Supplier.
   const providers = new Map<string, Supplier>([['prodseller', supplied ?? (config.PRODSELLER_MODE === 'demo' ? new DemoSupplier() : providerFactory(config.PRODSELLER_API_KEY, prodsellerMeta))]]);
   const catalog = new Catalog(store, config, providers); const orders = new Orders(store, catalog, config);
+  const orderChallenges = new Map<string, { answer:number; ip:string; expires:number }>();
   const customProviders = new CustomProviders(store, config, catalog, customFactory);customProviders.load();
   if (config.AIPAY_APP_ID && (config.AIPAY_PRIVATE_KEY || config.AIPAY_PRIVATE_PKCS_KEY)) {
     store.run("INSERT INTO settings(name,value) VALUES ('alipay',?) ON CONFLICT(name) DO UPDATE SET value=excluded.value", store.encrypt({
@@ -142,13 +143,17 @@ export function createApp(config: Config, supplied?: Supplier, providerFactory: 
     })).filter(c => adminView || c.available);
   }
   app.get('/api/health', (_req, res) => res.json({ ok: true }));
-  app.get('/api/config', (_req, res) => res.json({ storeName: config.STORE_NAME, demo: config.PAYMENT_MODE === 'demo', supplierDemo: config.PRODSELLER_MODE === 'demo', currency: 'CNY', exchangeRate: config.USDT_CNY_RATE, supportEmail: config.SUPPORT_EMAIL || 'support@example.com', supportWechat: config.SUPPORT_WECHAT || 'support_wechat', supportTelegram: config.SUPPORT_TELEGRAM || 't.me/support_contact', announcementZh: storeSettings.announcementZh, announcementEn: storeSettings.announcementEn, alipayGateway: alipay.enabled ? 'enabled' : undefined, channels: channelList() }));
+  app.get('/sitemap.xml', (_req,res) => {
+    const origin=new URL(config.APP_URL).origin;
+    res.type('application/xml').send(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>${origin}/</loc><changefreq>daily</changefreq></url></urlset>`);
+  });
+  app.get('/api/config', (_req, res) => res.json({ storeName: config.STORE_NAME, demo: config.PAYMENT_MODE === 'demo', supplierDemo: config.PRODSELLER_MODE === 'demo', currency: 'CNY', exchangeRate: config.USDT_CNY_RATE, supportEmail: config.SUPPORT_EMAIL || 'support@example.com', supportWechat: config.SUPPORT_WECHAT || 'support_wechat', supportTelegram: config.SUPPORT_TELEGRAM || 't.me/support_contact', announcementZh: storeSettings.announcementZh, announcementEn: storeSettings.announcementEn, alipayGateway: alipay.enabled ? 'enabled' : undefined, confirmedOrderCount: store.get<{n:number}>("SELECT COUNT(*) AS n FROM orders WHERE payment_status='paid'")?.n ?? 0, channels: channelList() }));
   app.get('/api/products', (_req, res) => res.json({ products: catalog.list() }));
   const checkoutLimit = rateLimit({ windowMs: 15 * 60000, limit: 30, message: { error: '下单过于频繁，请稍后再试', code: 'RATE_LIMITED' } });
   app.post('/api/orders', checkoutLimit, (req, res) => res.status(201).json(orders.create(checkoutSchema.parse(req.body))));
   const token = (req: Request) => req.headers.authorization?.replace(/^Bearer /, '');
-  app.get('/api/orders/:id', async (req, res) => {
-    const o = orders.authorize(req.params.id as string, token(req));
+  const resolveOrder = async (id:string, accessToken?:string) => {
+    const o = orders.authorize(id, accessToken);
     if (alipay.enabled && o.payment_channel === 'alipay' && o.payment_status !== 'paid') {
       const paid = await alipay.queryPaidTrade(o.id, o.total_cents);
       if (paid) {
@@ -157,8 +162,23 @@ export function createApp(config: Config, supplied?: Supplier, providerFactory: 
         store.audit('alipay.query', o.id);
       }
     }
-    await orders.refresh(o.id); res.json(orders.view(orders.get(o.id)));
+    await orders.refresh(o.id);
+    return orders.view(orders.get(o.id));
+  };
+  app.get('/api/order-challenge', rateLimit({windowMs:10*60000,limit:30,message:{error:'请求过于频繁，请稍后再试',code:'RATE_LIMITED'}}), (req,res) => {
+    const left = 10 + (randomBytes(1)[0]! % 40); const right = 10 + (randomBytes(1)[0]! % 40);
+    const id = randomBytes(18).toString('hex'); const now = Date.now();
+    for (const [key, challenge] of orderChallenges) if (challenge.expires < now) orderChallenges.delete(key);
+    orderChallenges.set(id,{answer:left+right,ip:req.ip??'',expires:now+5*60000});
+    res.json({id,question:`${left} + ${right} = ?`});
   });
+  app.post('/api/orders/lookup', rateLimit({windowMs:15*60000,limit:20,message:{error:'查询过于频繁，请 15 分钟后重试',code:'RATE_LIMITED'}}), async (req,res) => {
+    const input=z.object({id:z.string().uuid(),token:z.string().regex(/^[a-f0-9]{64}$/i),challengeId:z.string().regex(/^[a-f0-9]{36}$/),answer:z.number().int().min(0).max(98)}).parse(req.body);
+    const challenge=orderChallenges.get(input.challengeId); orderChallenges.delete(input.challengeId);
+    if(!challenge||challenge.expires<Date.now()||challenge.ip!==(req.ip??'')||challenge.answer!==input.answer)throw new AppError(400,'验证码错误或已过期，请重新计算','CAPTCHA_INVALID');
+    res.json(await resolveOrder(input.id,input.token));
+  });
+  app.get('/api/orders/:id', async (req, res) => res.json(await resolveOrder(req.params.id as string, token(req))));
   app.post('/api/orders/:id/payment', (req, res) => {
     const o = orders.authorize(req.params.id as string, token(req));
     const { reference } = z.object({ reference: z.string().trim().min(3).max(200) }).parse(req.body);
@@ -362,7 +382,7 @@ export function createApp(config: Config, supplied?: Supplier, providerFactory: 
   app.post('/api/admin/products', (req, res) => { const id = catalog.create(customProductSchema.parse(req.body)); res.status(201).json({ id }); });
   app.patch('/api/admin/products/:id', (req, res) => {
     const p = catalog.product(req.params.id as string);
-    const input = z.object({ name: z.string().min(1).max(100), nameEn: z.string().max(100), description: z.string().min(1).max(4000), descriptionEn: z.string().max(4000), priceCents: z.number().int().min(1).max(10000000), category: z.enum(['ai','streaming','design','tools','gaming','services']), enabled: z.boolean(), inStock: z.boolean().optional() }).parse(req.body);
+    const input = z.object({ name: z.string().min(1).max(100), nameEn: z.string().max(100), description: z.string().min(1).max(4000), descriptionEn: z.string().max(4000), priceCents: z.number().int().min(1).max(10000000), category: z.enum(['ai','streaming','design','tools','gaming','services','vpn']), enabled: z.boolean(), inStock: z.boolean().optional() }).parse(req.body);
     const nextInStock = input.inStock === undefined ? p.in_stock : +input.inStock;
     store.run('UPDATE products SET name=?,name_en=?,description=?,description_en=?,price_cents=?,price_override=?,category=?,enabled=?,in_stock=?,updated_at=? WHERE id=?', input.name, input.nameEn, input.description, input.descriptionEn, input.priceCents, input.priceCents, input.category, +input.enabled, nextInStock, new Date().toISOString(), p.id);
     store.audit('product.update', p.id); res.json({ ok: true });

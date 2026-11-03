@@ -624,7 +624,7 @@ export function localizeProductSync(input: {
       nameZh: curated.nameZh,
       nameEn: rawName,
       descZh: curated.descZh,
-      descEn: curated.descEn ?? rawDesc,
+      descEn: curated.descEn ?? rawDesc.replace(/醒图/g, 'Xingtu'),
     };
   }
   const delivery = input.delivery || 'instant';
@@ -660,6 +660,6 @@ export function localizeProductSync(input: {
     nameZh,
     nameEn,
     descZh: translateDescriptionDeterministic(rawDesc, nameZh, delivery, requiresEmail, inputKind, nameEn),
-    descEn: rawDesc,
+    descEn: rawDesc.replace(/醒图/g, 'Xingtu'),
   };
 }

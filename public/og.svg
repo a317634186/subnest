@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f7f8ef"/><stop offset="1" stop-color="#e6efdc"/></linearGradient>
+    <linearGradient id="card" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#28674d"/><stop offset="1" stop-color="#123e30"/></linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="1035" cy="70" r="250" fill="#dce9ce" opacity=".5"/>
+  <circle cx="185" cy="610" r="300" fill="#e7ecd9" opacity=".65"/>
+  <rect x="805" y="120" width="280" height="370" rx="32" fill="url(#card)" transform="rotate(8 945 305)"/>
+  <rect x="858" y="90" width="280" height="370" rx="32" fill="#fffdf8" stroke="#e5eadf" stroke-width="3" transform="rotate(-7 998 275)"/>
+  <circle cx="920" cy="205" r="34" fill="#e8f5eb"/><path d="M904 205h32m-16-16v32" stroke="#185b44" stroke-width="7" stroke-linecap="round"/>
+  <circle cx="1015" cy="205" r="34" fill="#f2eaf7"/><path d="M1015 180c0 14 11 25 25 25-14 0-25 11-25 25 0-14-11-25-25-25 14 0 25-11 25-25Z" fill="#7968bb"/>
+  <circle cx="920" cy="310" r="34" fill="#fff0e9"/><path d="M909 293v34l26-17-26-17Z" fill="#d96552"/>
+  <text x="105" y="225" fill="#648065" font-family="Arial,sans-serif" font-size="24" font-weight="700" letter-spacing="5">SUBNEST · DIGITAL MEMBERSHIPS</text>
+  <text x="100" y="320" fill="#1e382a" font-family="Arial,'Noto Sans SC',sans-serif" font-size="62" font-weight="700">订阅集 SubNest</text>
+  <text x="104" y="390" fill="#185b44" font-family="Arial,'Noto Sans SC',sans-serif" font-size="34" font-weight="600">AI 工具、影音与办公会员</text>
+  <text x="104" y="445" fill="#56685a" font-family="Arial,'Noto Sans SC',sans-serif" font-size="25">一站选购，订单进度随时可查</text>
+</svg>

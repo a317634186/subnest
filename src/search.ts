@@ -169,6 +169,8 @@ export function searchAndSortProducts(
     return list.sort((a, b) => {
       const stockDiff = Number(b.inStock) - Number(a.inStock);
       if (stockDiff !== 0) return stockDiff;
+      if (sort === 'popular') return (b.soldCount ?? 0) - (a.soldCount ?? 0);
+      if (sort === 'newest') return Date.parse(b.updatedAt ?? '') - Date.parse(a.updatedAt ?? '');
       if (sort === 'low') return a.priceCents - b.priceCents;
       if (sort === 'high') return b.priceCents - a.priceCents;
       return 0;
@@ -239,10 +241,12 @@ export function searchAndSortProducts(
   }
 
   scored.sort((a, b) => {
-    if (sort === 'low') return a.p.priceCents - b.p.priceCents || b.score - a.score;
-    if (sort === 'high') return b.p.priceCents - a.p.priceCents || b.score - a.score;
     const stockDiff = Number(b.p.inStock) - Number(a.p.inStock);
     if (stockDiff !== 0) return stockDiff;
+    if (sort === 'popular') return (b.p.soldCount ?? 0) - (a.p.soldCount ?? 0) || b.score - a.score;
+    if (sort === 'newest') return Date.parse(b.p.updatedAt ?? '') - Date.parse(a.p.updatedAt ?? '') || b.score - a.score;
+    if (sort === 'low') return a.p.priceCents - b.p.priceCents || b.score - a.score;
+    if (sort === 'high') return b.p.priceCents - a.p.priceCents || b.score - a.score;
     return b.score - a.score;
   });
 

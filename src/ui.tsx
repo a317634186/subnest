@@ -12,7 +12,7 @@ export function errorText(error: unknown, lang: string) {
     PAYMENT_UNAVAILABLE: 'This payment method is not available.', ACTIVATION_EMAILS_REQUIRED: 'Enter one activation email for each unit.',
     VALIDATION_ERROR: 'Please check required fields, email addresses and amounts.', CHECKOUT_CONFLICT: 'Checkout details changed. Please start a new order.',
     SUPPLIER_AUTH: 'The API key is invalid or disabled. Check ProdSeller API Manager.', SUPPLIER_BUSY: 'A supplier connection is already in progress. Please try again.',
-    DEMO_DISABLED: 'Demo payment is unavailable.', DEMO_PRODUCT: 'Demo products cannot accept real payments.',
+    DEMO_DISABLED: 'Demo payment is unavailable.', DEMO_PRODUCT: 'Demo products cannot accept real payments.', CAPTCHA_INVALID: 'The verification answer is incorrect or expired. Please try a new one.',
   };
   return error instanceof ApiError ? messages[error.code] ?? 'The request could not be completed. Please try again or contact the store.' : 'Connection failed. Please try again.';
 }

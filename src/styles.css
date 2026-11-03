@@ -55,6 +55,128 @@ a.contact-card:hover{border-color:var(--green);transform:translateY(-1px)}
 .show-out-toggle input{margin:0}
 .contact-card strong.support-email,.footer-contacts a[href^="mailto:"]{white-space:nowrap;word-break:normal;overflow-wrap:normal}
 .product-icon.edx .logo-monogram{font-size:12px;letter-spacing:-.6px}
+
+.catalog-controls{gap:10px}
+.price-range{display:flex;align-items:center;gap:7px;border:1px solid #dfe6da;border-radius:10px;background:#fff;padding:4px 8px;color:#536357;font-size:12px}
+.price-range input{width:76px;padding:7px 8px;font-size:13px}
+.price-range small{color:#66746a;font-size:12px}
+.variant-select{display:flex;flex-direction:column;gap:5px;margin:0 18px 8px;color:#526357;font-size:12px}
+.variant-select select{width:100%;padding:8px 10px;font-size:13px}
+.hero{min-height:470px}
+.hero-copy>p{font-size:14px;color:#536357;line-height:1.8}
+.hero-featured{margin-top:15px;max-width:500px}
+.hero-featured>strong{display:block;margin-bottom:7px;color:#3f5c45;font-size:12px}
+.hero-featured>div{display:flex;gap:7px;overflow:auto;padding:1px 1px 5px}
+.hero-featured button{display:flex;align-items:center;gap:6px;min-width:0;padding:6px 8px;border:1px solid #dfe8d7;border-radius:10px;background:#fffdf9;color:#304337;text-align:left}
+.hero-featured button .product-icon{width:25px;height:25px;flex:0 0 25px}
+.hero-featured button>span:nth-child(2){max-width:105px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px}
+.hero-featured button b{color:#185b44;font-size:12px;white-space:nowrap}
+.menu-toggle{display:none;border:0;background:transparent;padding:8px;color:#234334}
+.legal-page{max-width:900px;min-height:65vh;padding-top:55px;padding-bottom:70px}
+.legal-page>h1{margin:8px 0 28px;font-size:32px;color:#1e382a}
+.legal-steps{display:grid;gap:14px}
+.legal-steps section{padding:20px 22px;border:1px solid #e1e9dc;border-radius:14px;background:#fffdf9}
+.legal-steps h2{margin-bottom:8px;font-size:17px;color:#244631}
+.legal-steps p,.legal-faq details>p{font-size:14px;line-height:1.8;color:#4f5e53}
+.legal-back{margin-top:25px;min-height:44px}
+.checkout-section{padding:14px 0;border-bottom:1px solid #e7ebe5}
+.checkout-section>h3{margin-bottom:10px;color:#294734;font-size:15px}
+.checkout-product h4{font-size:16px;margin-bottom:5px}
+.validity-line,.policy-copy{font-size:14px;line-height:1.7;color:#4f5e53}
+.validity-line{margin-bottom:8px}
+.price-breakdown{display:grid;gap:8px;padding:12px;border:1px solid #e3e9df;border-radius:10px;background:#f8faf5}
+.price-breakdown>div{display:flex;justify-content:space-between;gap:12px;font-size:14px;color:#526357}
+.price-breakdown .checkout-total{padding-top:9px;border-top:1px solid #dce5d8;font-weight:700;color:#1e382a}
+.checkout-section .product-description{margin:0;font-size:14px;color:#4f5e53}
+.footer-links{flex-wrap:wrap;row-gap:10px}
+.hero h1{font-size:34px}
+.hero-footnote{font-size:12px;color:#506451}
+.announcement{font-size:13px}
+.how-section h2{font-size:25px}
+.steps p,.faq-list summary,.faq-list details>p,.contact-copy p{font-size:14px;color:#4f5e53}
+.contact-label{font-size:12px;color:#526357}
+.contact-card strong{font-size:14px}
+.site-footer,.site-footer a,.footer-contacts{font-size:12px;color:#47584d}
+.button,.buy-button{min-height:44px}
+.catalog-toolbar select{min-height:40px;font-size:13px}
+.card-stock-badge,.delivery-label{font-size:12px}
+.product-card.out-of-stock .price{text-decoration:none;color:#66736a}
+.product-card-badges:empty{display:none;min-height:0}
+.sales-badge{display:inline-flex;align-items:center;padding:4px 8px;border-radius:999px;background:#fff2dc;border:1px solid #f2d29f;color:#754500;font-size:12px;font-weight:650;white-space:nowrap}
+
+.announcement,.hero-eyebrow,.hero-secondary,.hero-footnote,.benefits strong,.benefits small,.eyebrow,.section-heading p,.product-category,.catalog-bottom,.step h3,.step p,.faq-section>div>p,.faq-list summary,.faq-list details>p,.contact-copy p,.contact-label,.footer-contacts,.support-inline,.checkout-product .muted,.product-description,.notice,.form-note,.field-hint,.brand small{font-size:max(12px,1em)}
+.announcement,.hero-eyebrow,.hero-secondary,.hero-footnote,.benefits small,.section-heading p,.product-category,.catalog-bottom,.step p,.faq-section>div>p,.faq-list details>p,.contact-copy p,.footer-contacts,.support-inline,.checkout-product .muted,.product-description,.notice,.form-note,.field-hint{color:#536157}
+.category-tabs button,.catalog-controls>select,.variant-select select,.price-range input{min-height:44px;font-size:14px}
+.site-footer button,.language-switch button{min-height:44px}
+button{min-height:44px}
+input::placeholder,textarea::placeholder{color:#66746a}
+.product-grid{gap:22px}
+.product-card{border-radius:16px;box-shadow:0 5px 20px #183f2d0b}
+.product-card.in-stock{border-top-color:#228b53}
+.product-card.out-of-stock{background:#f2f4f1}
+.button,.buy-button{min-height:44px;border-radius:10px}
+.announcement{padding-top:12px;padding-bottom:12px}
+.how-section{padding-top:36px;padding-bottom:36px}
+.how-section h2{font-size:27px}
+.steps{gap:28px}
+.hero-featured button{min-height:44px}
+.empty p{color:#536157}
+.menu-toggle{min-width:44px;min-height:44px}
+.trust-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:22px 0 8px;padding:18px 20px;border:1px solid #e2eadc;border-radius:16px;background:#f8faf5}
+.trust-strip>div{display:flex;align-items:center;gap:11px;min-width:0}
+.trust-strip svg{width:21px;height:21px;color:#39714d;flex:none}
+.trust-strip strong,.trust-strip small{display:block}
+.trust-strip strong{font-size:14px;color:#244631}
+.trust-strip small{margin-top:3px;font-size:12px;color:#536157}
+.order-captcha{display:flex;align-items:center;gap:8px;white-space:nowrap}
+.order-captcha span{font-size:13px;color:#394a3c}
+.order-captcha input{width:72px;min-height:44px}
+
+@media(max-width:600px){
+  .product-grid{gap:14px}
+  .category-tabs button{font-size:13px;min-height:44px}
+  .hero-footnote{font-size:12px;flex-wrap:wrap}
+  .benefits strong{font-size:13px}
+  .benefits small{font-size:12px}
+  .step h3,.faq-list summary{font-size:14px}
+  .faq-list details>p,.step p,.contact-copy p{font-size:12px}
+  .catalog-bottom{font-size:12px}
+  .product-card-badges{gap:4px}
+  .sales-badge{font-size:12px}
+}
+
+@media(max-width:850px){
+  .header-inner nav{display:none}
+  .menu-toggle{display:inline-flex;align-items:center;justify-content:center}
+  .header-inner nav.nav-open{position:absolute;z-index:30;top:calc(100% - 1px);left:0;right:0;display:grid;gap:0;padding:8px 20px 16px;background:#fffdf9;border-bottom:1px solid #e2e9df;box-shadow:0 12px 22px #1b382018}
+  .header-inner nav.nav-open a{padding:12px 8px;font-size:15px}
+  .site-header{position:sticky;top:0;z-index:40}
+  .hero{min-height:unset}
+}
+@media(max-width:600px){
+  .modal-backdrop{padding:0;align-items:stretch}
+  .modal,.modal.wide{width:100%;height:100dvh;max-height:100dvh;border-radius:0;padding:20px 18px calc(22px + env(safe-area-inset-bottom))}
+  .modal .form-stack>.button.primary.full{position:sticky;bottom:0;z-index:2;box-shadow:0 -8px 18px #fffefb}
+  .price-range{width:100%;justify-content:flex-start;margin-top:8px}
+  .price-range input{flex:1;min-width:54px}
+  .catalog-controls{align-items:stretch}
+  .legal-page{padding-top:32px;padding-bottom:45px}
+  .legal-page>h1{font-size:27px}
+  .legal-steps section{padding:16px}
+  .hero-featured{margin-top:12px}
+  .hero-featured button{min-width:170px}
+  .hero h1{font-size:27px;line-height:1.45}
+  .hero-copy>p{font-size:14px}
+  .benefits small,.step p,.faq-list details>p{font-size:12px}
+  .product-card h3{font-size:15px}
+  .product-card-body p{font-size:12px}
+  .product-card-footer .buy-button{min-height:44px}
+  .footer-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .trust-strip{grid-template-columns:1fr;padding:16px}
+  .order-captcha{width:100%;justify-content:flex-start}
+  .order-captcha input{flex:1;max-width:100px}
+}
+@media(max-width:380px){.product-grid{grid-template-columns:1fr}.product-card{min-height:unset}}
 .footer-contacts{align-items:center}
 
 @media(max-width:600px){

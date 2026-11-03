@@ -846,7 +846,7 @@ function ProductForm({ product, error, busy, onClose, onSave }: {
           <label>{t('售价（人民币）', 'Retail price (CNY)')}<input required type="number" min="0.01" step="0.01" max="100000" value={form.price} onChange={e => change('price', e.target.value)} /></label>
           <label>{t('商品分类', 'Category')}
             <select value={form.category} onChange={e => change('category', e.target.value)}>
-              {[['services', '账号与验证', 'Account services'], ['ai', 'AI 工具', 'AI tools'], ['streaming', '影音娱乐', 'Entertainment'], ['design', '创意设计', 'Creative'], ['tools', '效率办公', 'Productivity'], ['gaming', '游戏服务', 'Gaming']].map(([v, zh, en]) => <option key={v} value={v}>{t(zh, en)}</option>)}
+              {[['services', '账号与验证', 'Accounts'], ['ai', 'AI 工具', 'AI tools'], ['streaming', '影音娱乐', 'Entertainment'], ['design', '创意设计', 'Creative'], ['tools', '效率办公', 'Productivity'], ['vpn', 'VPN', 'VPN'], ['gaming', '游戏服务', 'Gaming']].map(([v, zh, en]) => <option key={v} value={v}>{t(zh, en)}</option>)}
             </select>
           </label>
         </div>
