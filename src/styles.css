@@ -52,8 +52,14 @@ a.contact-card:hover{border-color:var(--green);transform:translateY(-1px)}
 .product-card.out-of-stock .price{text-decoration:none;color:#69756c}
 .delivery-label{display:inline-flex;align-items:center;gap:4px;color:#647263;font-size:10px}
 .delivery-label.instant{display:none}
-.show-out-toggle{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 12px;border:1px solid #dfe6da;border-radius:999px;background:#fff;color:#394a3c;font-size:12px;white-space:nowrap;cursor:pointer}
-.show-out-toggle input{margin:0}
+.show-out-toggle{display:inline-flex;flex-direction:row;align-items:center;align-self:center;flex:0 0 auto;gap:9px;min-height:44px;margin:0;padding:0 13px;border:1px solid #dfe6da;border-radius:999px;background:#fff;color:#394a3c;font-size:13px;line-height:1;white-space:nowrap;cursor:pointer;transition:background .18s,border-color .18s,box-shadow .18s}
+.show-out-toggle:hover{border-color:#b9cbb8;background:#fbfdf9}
+.show-out-toggle:focus-within{outline:2px solid #8cb596;outline-offset:2px}
+.show-out-toggle input{appearance:none;position:relative;display:block;flex:0 0 36px;width:36px;height:21px;min-width:36px;margin:0;padding:0;border:0;border-radius:999px;background:#cbd3cb;cursor:pointer;transition:background .18s}
+.show-out-toggle input::before{content:'';position:absolute;top:2px;left:2px;width:17px;height:17px;border-radius:50%;background:#fff;box-shadow:0 1px 3px #17261c33;transition:transform .18s}
+.show-out-toggle input:checked{background:#28764d}
+.show-out-toggle input:checked::before{transform:translateX(15px)}
+.show-out-toggle input:focus-visible{outline:2px solid #185b44;outline-offset:3px}
 .contact-card strong.support-email,.footer-contacts a[href^="mailto:"]{white-space:nowrap;word-break:normal;overflow-wrap:normal}
 .product-icon.edx .logo-monogram{font-size:12px;letter-spacing:-.6px}
 
@@ -168,7 +174,7 @@ input::placeholder,textarea::placeholder{color:#66746a}
   .product-card-top{padding:13px 12px 0}
   .product-card-body{padding:10px 12px 8px}
   .product-card-footer{padding:10px 12px 12px;gap:6px}
-  .show-out-toggle{margin-top:10px;font-size:11px}
+  .show-out-toggle{margin-top:0;font-size:12px}
 }
 
 .product-icon .logo-monogram{font-family:'DM Sans Variable',system-ui,sans-serif;font-weight:800;font-size:15px;letter-spacing:-.5px;line-height:1}.product-icon.small .logo-monogram{font-size:12px}
