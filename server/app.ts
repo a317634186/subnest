@@ -3,7 +3,7 @@ import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import { rateLimit } from 'express-rate-limit';
 import { randomBytes, scryptSync, timingSafeEqual } from 'node:crypto';
-import { resolve } from 'node:path';
+import { dirname, resolve } from 'node:path';
 import { existsSync } from 'node:fs';
 import { z } from 'zod';
 import type { Config } from './config.js';
@@ -143,6 +143,11 @@ export function createApp(config: Config, supplied?: Supplier, providerFactory: 
     })).filter(c => adminView || c.available);
   }
   app.get('/api/health', (_req, res) => res.json({ ok: true }));
+  const wechatPaymentImage = resolve(dirname(config.DATABASE_PATH), 'wechat-payment.png');
+  app.get('/payment-wechat.png', (_req,res) => {
+    if (!existsSync(wechatPaymentImage)) return res.sendStatus(404);
+    res.type('image/png').sendFile(wechatPaymentImage);
+  });
   app.get('/sitemap.xml', (_req,res) => {
     const origin=new URL(config.APP_URL).origin;
     res.type('application/xml').send(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>${origin}/</loc><changefreq>daily</changefreq></url></urlset>`);
