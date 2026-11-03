@@ -106,6 +106,8 @@ a.contact-card:hover{border-color:var(--green);transform:translateY(-1px)}
 
 .announcement,.hero-eyebrow,.hero-secondary,.hero-footnote,.benefits strong,.benefits small,.eyebrow,.section-heading p,.product-category,.catalog-bottom,.step h3,.step p,.faq-section>div>p,.faq-list summary,.faq-list details>p,.contact-copy p,.contact-label,.footer-contacts,.support-inline,.checkout-product .muted,.product-description,.notice,.form-note,.field-hint,.brand small{font-size:max(12px,1em)}
 .announcement,.hero-eyebrow,.hero-secondary,.hero-footnote,.benefits small,.section-heading p,.product-category,.catalog-bottom,.step p,.faq-section>div>p,.faq-list details>p,.contact-copy p,.footer-contacts,.support-inline,.checkout-product .muted,.product-description,.notice,.form-note,.field-hint{color:#536157}
+.announcement{color:#f4f5e7}
+.announcement .announcement-right{color:#e4ecdf;opacity:1}
 .category-tabs button,.catalog-controls>select,.variant-select select,.price-range input{min-height:44px;font-size:14px}
 .site-footer button,.language-switch button{min-height:44px}
 button{min-height:44px}
