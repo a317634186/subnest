@@ -5,7 +5,7 @@ import { CURATED_BY_SOURCE_ID } from '../server/curated-translations.js';
 
 test('code 按上下文翻译，不再一律变成兑换码', () => {
   assert.equal(postProcessChineseText('支持 VS兑换码 与 claude兑换码'), '支持 VS Code 与 Claude Code');
-  assert.ok(!postProcessChineseText('Claude Dev 可用').includes('Claude Dev'));
+  assert.equal(postProcessChineseText('Claude Dev 可用'), 'Claude Dev 可用');
   assert.equal(postProcessChineseText('登录兑换码会发送到邮箱'), '登录验证码会发送到邮箱');
 });
 

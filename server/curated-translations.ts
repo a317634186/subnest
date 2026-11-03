@@ -227,7 +227,7 @@ https://docs.google.com/document/d/1bKvZSBqpS5eIq5EsQ45nagvH6KB1ywqjcIk7BcWkVF0/
     nameZh: 'Claude API – 10M Token，1天有效（保真包退）',
     descZh: `🔑 Claude API – 10M Token 额度 – 1天有效
 🛡️ 100% 正版 Claude API（如非正品保证 100% 全额退款）。
-⚡ 无缝兼容各类 AI 编程工具与 IDE：9Router、Claude Code、Cursor、VS Code 等。
+⚡ 无缝兼容各类 AI 编程工具与 IDE：9Router、Claude Dev、Cursor、VS Code 等。
 ⏳ 有效期：兑换激活后 1 天
 
 📋 快速配置步骤：
@@ -318,7 +318,7 @@ https://docs.google.com/document/d/1bKvZSBqpS5eIq5EsQ45nagvH6KB1ywqjcIk7BcWkVF0/
     nameZh: 'Claude API – 50M Token，2天有效（保真包退）',
     descZh: `🔑 Claude API – 50M Token 额度 – 2天有效
 🛡️ 100% 正版 Claude API（如非正品保证 100% 全额退款）。
-⚡ 无缝兼容各类 AI 编程工具与 IDE：9Router、Claude Code、Cursor、VS Code 等。
+⚡ 无缝兼容各类 AI 编程工具与 IDE：9Router、Claude Dev、Cursor、VS Code 等。
 ⏳ 有效期：兑换激活后 2 天
 
 📋 快速配置步骤：
@@ -406,7 +406,7 @@ https://docs.google.com/document/d/1bKvZSBqpS5eIq5EsQ45nagvH6KB1ywqjcIk7BcWkVF0/
     nameZh: 'Claude API – 100M Token，3天有效（保真包退）',
     descZh: `🔑 Claude API – 100M Token 额度 – 3天有效
 🛡️ 100% 正版 Claude API（如非正品保证 100% 全额退款）。
-⚡ 无缝兼容各类 AI 编程工具与 IDE：9Router、Claude Code、Cursor、VS Code 等。
+⚡ 无缝兼容各类 AI 编程工具与 IDE：9Router、Claude Dev、Cursor、VS Code 等。
 ⏳ 有效期：兑换激活后 3 天
 
 📋 快速配置步骤：
@@ -416,13 +416,13 @@ https://docs.google.com/document/d/1bKvZSBqpS5eIq5EsQ45nagvH6KB1ywqjcIk7BcWkVF0/
 
 📖 详细配置文档：https://docs.google.com/document/d/16smXXteTwJYdrxTfdZlJvOkSEFkVL_6UBxoXcXZH6Gc/edit?tab=t.tbg84q5rs9yi
 ⚠️ 重要提示：有效期自兑换码激活之时起算；未激活前可妥善保存或转售。`,
-    descEn: `🔑 API CLAUDE - 100M Token - 3 Days\n\n🛡️ 100% Genuine Claude API (100% refund guaranteed if not authentic).\n⚡ Seamlessly compatible with all tools & IDEs: 9Router, Claude Code, Cursor, VS Code, etc.\n⏳ Validity: 3 Days After redeem.\n\n📋 Quick Setup Instructions:\n🔹 Step 1: Visit 👉 https://miraiapi.com/usage/#redeem to redeem your code (Enter the code provided in your order details).\n🔹 Step 2: Visit 👉 https://miraiapi.com/usage/#config to configure your API Key, select your target App, and choose the ideal Model.\n✨ All done & Ready to code!\n\n📖 Detailed Documentation & Guide: 🔗 https://docs.google.com/document/d/16smXXteTwJYdrxTfdZlJvOkSEFkVL_6UBxoXcXZH6Gc/edit?tab=t.tbg84q5rs9yi\n\n⚠️ Important Notice: The validity period only starts counting once the redeem code is activated. You can store or resell the code.`,
+    descEn: `🔑 API CLAUDE - 100M Token - 3 Days\n\n🛡️ 100% Genuine Claude API (100% refund guaranteed if not authentic).\n⚡ Seamlessly compatible with all tools & IDEs: 9Router, Claude Dev, Cursor, VS Code, etc.\n⏳ Validity: 3 Days After redeem.\n\n📋 Quick Setup Instructions:\n🔹 Step 1: Visit 👉 https://miraiapi.com/usage/#redeem to redeem your code (Enter the code provided in your order details).\n🔹 Step 2: Visit 👉 https://miraiapi.com/usage/#config to configure your API Key, select your target App, and choose the ideal Model.\n✨ All done & Ready to code!\n\n📖 Detailed Documentation & Guide: 🔗 https://docs.google.com/document/d/16smXXteTwJYdrxTfdZlJvOkSEFkVL_6UBxoXcXZH6Gc/edit?tab=t.tbg84q5rs9yi\n\n⚠️ Important Notice: The validity period only starts counting once the redeem code is activated. You can store or resell the code.`,
   },
   '6ad6a6d78a6410951c251a5d': {
     nameZh: 'Claude API – 500M Token，6天有效（保真包退）',
     descZh: `🔑 Claude API – 500M Token 额度 – 6天有效
 🛡️ 100% 正版 Claude API（如非正品保证 100% 全额退款）。
-⚡ 无缝兼容各类 AI 编程工具与 IDE：9Router、Claude Code、Cursor、VS Code 等。
+⚡ 无缝兼容各类 AI 编程工具与 IDE：9Router、Claude Dev、Cursor、VS Code 等。
 ⏳ 有效期：兑换激活后 6 天
 
 📋 快速配置步骤：

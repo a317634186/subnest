@@ -33,7 +33,6 @@ export function normalizeEnglishTitle(raw: string): string {
     .replace(/\[KEY\]/gi, '[Activation Key]')
     .replace(/\bFW\b/gi, '(Full Warranty)')
     .replace(/\bNW\b/gi, '(No Warranty)')
-    .replace(/\bClaude\s+Dev\b/gi, 'Claude Code')
     .replace(/\b(\d+)\s*[-–]\s*(\d+)\s*D\b/gi, '$1–$2 Days')
     .replace(/\b(\d+)\s*D\b(?!\s*(?:render|model|print|audio|animation|video))/gi, '$1 Days');
   if (isCreditOrTokenTitle) {
@@ -53,7 +52,6 @@ const TITLE_PHRASE_RULES: Array<[RegExp, string | ((substring: string, ...args: 
   [/\bVS\s*Code\b/gi, 'VS Code'],
   [/\bVSCode\b/gi, 'VS Code'],
   [/\bClaude\s*Code\b/gi, 'Claude Code'],
-  [/\bClaude\s*Dev\b/gi, 'Claude Code'],
   [/\bRoo\s*Code\b/gi, 'Roo Code'],
   [/\bKilo\s*Code\b/gi, 'Kilo Code'],
   [/\bOpenCode\b/gi, 'OpenCode'],
@@ -376,7 +374,6 @@ export function postProcessChineseText(zh: string, productTitle = ''): string {
     // 1. Fix IDE & coding tool names that were machine-translated
     .replace(/VS\s*兑换码|VS\s*代码|VSCode\s*兑换码/gi, 'VS Code')
     .replace(/claude\s*兑换码|Claude\s*代码|克劳德代码|克劳德兑换码/gi, 'Claude Code')
-    .replace(/\bClaude\s*Dev\b/gi, 'Claude Code')
     .replace(/Roo\s*兑换码|Roo\s*代码/gi, 'Roo Code')
     .replace(/Kilo\s*兑换码|Kilo\s*代码/gi, 'Kilo Code')
     .replace(/全部完成并准备兑换码！|全部完成并准备代码！|准备好代码！|ready\s*兑换码/gi, '配置完成，即可开始编程使用！')
@@ -535,7 +532,7 @@ export function prepareDescriptionForTranslation(rawDesc: string, productTitleEn
   // Context-aware phrase pre-translations before machine/AI translation
   s = s
     .replace(/\bVS\s*Code\b|\bVSCode\b/gi, () => protect('VS Code'))
-    .replace(/\bClaude\s*Code\b|\bClaude\s*Dev\b/gi, () => protect('Claude Code'))
+    .replace(/\bClaude\s*Code\b|\bClaude\s*Dev\b/gi, match => protect(match))
     .replace(/\bRoo\s*Code\b/gi, () => protect('Roo Code'))
     .replace(/\bKilo\s*Code\b/gi, () => protect('Kilo Code'))
     .replace(/\bOpenCode\b/gi, () => protect('OpenCode'))

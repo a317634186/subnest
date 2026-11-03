@@ -76,14 +76,17 @@ function matchBrandFromText(n: string): string | null {
   if (/nordvpn|\bnord\b/.test(n)) return 'nordvpn';
   if (/expressvpn/.test(n)) return 'expressvpn';
   if (/surfshark/.test(n)) return 'surfshark';
-  if (/kaspersky|avira|norton/.test(n)) return 'kaspersky';
+  if (/avira/.test(n)) return 'avira';
+  if (/kaspersky/.test(n)) return 'kaspersky';
+  if (/norton/.test(n)) return 'norton';
   if (/proton/.test(n)) return 'proton';
   if (/adguard/.test(n)) return 'adguard';
   if (/hma\b/.test(n)) return 'hma';
   if (/ipvanish|purevpn|v2ray|proxy/.test(n)) return 'vpn';
   if (/gpm/.test(n)) return 'gpm';
   if (/duolingo|memrise/.test(n)) return 'duolingo';
-  if (/coursera|edx|udemy|skillshare/.test(n)) return 'coursera';
+  if (/\bedx\b/.test(n)) return 'edx';
+  if (/coursera|udemy|skillshare/.test(n)) return 'coursera';
   if (/quizlet|kahoot/.test(n)) return 'quizlet';
   if (/ilovepdf/.test(n)) return 'ilovepdf';
   if (/scribd/.test(n)) return 'scribd';
@@ -191,6 +194,8 @@ const brandPalettes: Record<string, { bg: string; fg: string }> = {
   expressvpn: { bg: '#fef2f2', fg: '#da3940' },
   surfshark: { bg: '#f0fdfa', fg: '#178a9e' },
   kaspersky: { bg: '#ecfdf5', fg: '#00a88e' },
+  avira: { bg: '#fff1f2', fg: '#d71920' },
+  norton: { bg: '#fff7ed', fg: '#ffcb00' },
   proton: { bg: '#f5f3ff', fg: '#6d4aff' },
   adguard: { bg: '#ecfdf5', fg: '#10b981' },
   hma: { bg: '#fffbeb', fg: '#d97706' },
@@ -198,6 +203,7 @@ const brandPalettes: Record<string, { bg: string; fg: string }> = {
   gpm: { bg: '#fff7ed', fg: '#ea580c' },
   duolingo: { bg: '#f0fdf4', fg: '#58cc02' },
   coursera: { bg: '#eff6ff', fg: '#0056d2' },
+  edx: { bg: '#fff1f2', fg: '#b31b1b' },
   quizlet: { bg: '#eef2ff', fg: '#4255ff' },
   ilovepdf: { bg: '#fef2f2', fg: '#e5322d' },
   scribd: { bg: '#f0fdfa', fg: '#0d9488' },
@@ -331,6 +337,10 @@ function renderBrandSvg(key: string, name?: string): ReactNode {
       return <b className="logo-monogram">SS</b>;
     case 'kaspersky':
       return <b className="logo-monogram">K</b>;
+    case 'avira':
+      return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round"><path d="M3.5 13a8.5 8.5 0 0 1 17 0H3.5Z"/><path d="M12 5v13.5m0-5.5c0 3.2 1.7 5.5 4.6 6.5"/></svg>;
+    case 'norton':
+      return <b className="logo-monogram">N</b>;
     case 'proton':
       return <b className="logo-monogram">P</b>;
     case 'adguard':
@@ -345,6 +355,8 @@ function renderBrandSvg(key: string, name?: string): ReactNode {
       return <b className="logo-monogram">🦉</b>;
     case 'coursera':
       return <b className="logo-monogram">C</b>;
+    case 'edx':
+      return <b className="logo-monogram">edX</b>;
     case 'quizlet':
       return <b className="logo-monogram">Q</b>;
     case 'ilovepdf':
