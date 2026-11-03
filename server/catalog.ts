@@ -173,7 +173,7 @@ export class Catalog {
         const [category, brand] = detectProductStyle(p.name, p.inputKind);
         const delivery = p.requiresEmailActivation ? 'activation' : p.delivery?.type === 'instant' ? 'instant' : 'manual';
         const loc = mode === 'live'
-          ? localizeProductSync({ name: p.name, description: p.description ?? '', delivery, requiresEmail: !!p.requiresEmailActivation, inputKind: p.inputKind ?? '' })
+          ? localizeProductSync({ sourceId: p.id, name: p.name, description: p.description ?? '', delivery, requiresEmail: !!p.requiresEmailActivation, inputKind: p.inputKind ?? '' })
           : { nameZh: p.name, nameEn: '', descZh: p.description ?? '', descEn: '' };
         const price = Math.max(1, Math.ceil(p.price * this.config.USDT_CNY_RATE * (1 + markup / 100) * 100 - 1e-8));
         const initialEnabled = p.initiallyEnabled === false ? 0 : (autoEnable ? 1 : 0);
