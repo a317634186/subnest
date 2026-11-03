@@ -146,6 +146,7 @@ export function searchAndSortProducts(
     category?: string;
     provider?: string;
     sort?: string;
+    stockFilter?: 'all' | 'in' | 'out';
     ignoreCategoryWhenSearching?: boolean;
   },
 ): Product[] {
@@ -153,20 +154,25 @@ export function searchAndSortProducts(
   const category = options.category || 'all';
   const provider = options.provider || 'all';
   const sort = options.sort || 'default';
+  const stockFilter = options.stockFilter || 'all';
 
   const candidates = indexed.filter(item => {
     if (provider !== 'all' && item.p.provider !== provider) return false;
     if (category !== 'all' && item.p.category !== category) return false;
+    if (stockFilter === 'in' && !item.p.inStock) return false;
+    if (stockFilter === 'out' && item.p.inStock) return false;
     return true;
   });
 
   if (!rawQuery) {
     const list = candidates.map(c => c.p);
-    return sort === 'low'
-      ? list.sort((a, b) => a.priceCents - b.priceCents)
-      : sort === 'high'
-        ? list.sort((a, b) => b.priceCents - a.priceCents)
-        : list.sort((a, b) => Number(b.inStock) - Number(a.inStock));
+    return list.sort((a, b) => {
+      const stockDiff = Number(b.inStock) - Number(a.inStock);
+      if (stockDiff !== 0) return stockDiff;
+      if (sort === 'low') return a.priceCents - b.priceCents;
+      if (sort === 'high') return b.priceCents - a.priceCents;
+      return 0;
+    });
   }
 
   const runMatch = (pool: IndexedProduct[]) => {
@@ -223,7 +229,12 @@ export function searchAndSortProducts(
   let scored = runMatch(candidates);
   // If user searched while a category filter was active and got 0 results in that category, fall back to all categories
   if (scored.length === 0 && category !== 'all' && options.ignoreCategoryWhenSearching !== false) {
-    const allPool = indexed.filter(item => provider === 'all' || item.p.provider === provider);
+    const allPool = indexed.filter(item => {
+      if (provider !== 'all' && item.p.provider !== provider) return false;
+      if (stockFilter === 'in' && !item.p.inStock) return false;
+      if (stockFilter === 'out' && item.p.inStock) return false;
+      return true;
+    });
     scored = runMatch(allPool);
   }
 

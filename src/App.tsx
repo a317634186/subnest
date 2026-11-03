@@ -28,19 +28,28 @@ function Shop({ products, config, loading, error, onBuy, reload }: { products: P
   const [category,setCategory] = useState('all');
   const [search,setSearch] = useState('');
   const [sort,setSort] = useState('default');
+  const [stockFilter,setStockFilter] = useState<'all'|'in'|'out'>('all');
   const [visibleCount,setVisibleCount] = useState(PAGE_SIZE);
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
 
   const indexed = useMemo(() => buildSearchIndex(products), [products]);
 
-  const filtered = useMemo(
+  const baseMatched = useMemo(
     () => searchAndSortProducts(indexed, { query: search, category, sort }),
     [indexed, category, search, sort]
   );
 
+  const inStockCount = useMemo(() => baseMatched.filter(p => p.inStock).length, [baseMatched]);
+  const outOfStockCount = baseMatched.length - inStockCount;
+
+  const filtered = useMemo(
+    () => stockFilter === 'in' ? baseMatched.filter(p => p.inStock) : stockFilter === 'out' ? baseMatched.filter(p => !p.inStock) : baseMatched,
+    [baseMatched, stockFilter]
+  );
+
   useEffect(() => {
     setVisibleCount(PAGE_SIZE);
-  }, [category, search, sort]);
+  }, [category, search, sort, stockFilter]);
 
   useEffect(() => {
     const node = loadMoreRef.current;
@@ -71,11 +80,11 @@ function Shop({ products, config, loading, error, onBuy, reload }: { products: P
       </section>
       <div className="benefits"><div><Zap/><span><strong>{t('交付更省心','Simple fulfillment')}</strong><small>{t('核款后发货，进度随时可查','Track delivery after payment review')}</small></span></div><div><ShieldCheck/><span><strong>{t('订单有保障','Private by design')}</strong><small>{t('专属查询凭证，保护交付信息','Your delivery stays behind your key')}</small></span></div><div><Globe2/><span><strong>{t('好体验不设限','A world of possibilities')}</strong><small>{t('数字会员与效率工具，一站选购','Memberships and tools in one place')}</small></span></div><div><LifeBuoy/><span><strong>{t('服务有回应','Help when you need it')}</strong><small>{t('保留订单号，方便售后处理','Order references make support easier')}</small></span></div></div>
       <section id="catalog" className="catalog-section"><div className="section-heading"><div><span className="eyebrow">{t('精选日常数字好物','CURATED FOR YOUR EVERYDAY')}</span><h2>{t('发现你的下一份订阅','Find your next favorite')}<span className="heading-dot">.</span></h2><p>{t('工作更高效，娱乐更尽兴。总有一款适合你。','Work a little smarter. Unwind a little better. Make it yours.')}</p></div><div className="search-box"><Search size={18}/><input aria-label={t('搜索商品','Search products')} value={search} onChange={e=>setSearch(e.target.value)} placeholder={t('搜索品牌、名称或别名（如 ChatGPT / 剪映 / 油管）…','Search brand or product (e.g. ChatGPT, CapCut, YouTube)…')}/>{search ? <button type="button" className="search-clear" aria-label={t('清空搜索','Clear search')} onClick={()=>setSearch('')}>×</button> : <kbd>⌕</kbd>}</div></div>
-        <div className="catalog-toolbar"><div className="category-tabs">{categories.map(c=><button type="button" className={category===c.id?'active':''} key={c.id} onClick={()=>setCategory(c.id)}><c.icon size={16}/>{t(c.zh,c.en)}</button>)}</div><select aria-label={t('商品排序','Sort products')} value={sort} onChange={e=>setSort(e.target.value)}><option value="default">{t('默认：有货优先','In stock first')}</option><option value="low">{t('价格从低到高','Price: low to high')}</option><option value="high">{t('价格从高到低','Price: high to low')}</option></select></div>
-        {loading ? <div className="loading"><Spinner/>{t('正在整理好物…','Loading the collection…')}</div> : error ? <div className="empty"><p className="error">{error}</p><button className="button secondary" onClick={reload}>{t('重新加载','Try again')}</button></div> : !filtered.length ? <Empty title={t('暂时没有匹配的商品','No matches just yet')} text={t('换个关键词或分类试试；店铺也可能还未上架商品。','Try another search or category. New products may be on their way.')}/> : <>
+        <div className="catalog-toolbar"><div className="category-tabs">{categories.map(c=><button type="button" className={category===c.id?'active':''} key={c.id} onClick={()=>setCategory(c.id)}><c.icon size={16}/>{t(c.zh,c.en)}</button>)}</div><div className="catalog-controls"><div className="store-stock-filter" role="group" aria-label={t('库存状态筛选','Filter by stock status')}><button type="button" className={`stock-filter-btn ${stockFilter==='all'?'active':''}`} onClick={()=>setStockFilter('all')}>{t(`全部 (${baseMatched.length})`,`All (${baseMatched.length})`)}</button><button type="button" className={`stock-filter-btn in ${stockFilter==='in'?'active':''}`} onClick={()=>setStockFilter('in')}><i className="stock-dot in"/>{t(`仅看有货 (${inStockCount})`,`In stock (${inStockCount})`)}</button><button type="button" className={`stock-filter-btn out ${stockFilter==='out'?'active':''}`} onClick={()=>setStockFilter('out')}><i className="stock-dot out"/>{t(`缺货 (${outOfStockCount})`,`Sold out (${outOfStockCount})`)}</button></div><select aria-label={t('商品排序','Sort products')} value={sort} onChange={e=>setSort(e.target.value)}><option value="default">{t('默认：有货优先','In stock first')}</option><option value="low">{t('价格从低到高','Price: low to high')}</option><option value="high">{t('价格从高到低','Price: high to low')}</option></select></div></div>
+        {loading ? <div className="loading"><Spinner/>{t('正在整理好物…','Loading the collection…')}</div> : error ? <div className="empty"><p className="error">{error}</p><button className="button secondary" onClick={reload}>{t('重新加载','Try again')}</button></div> : !filtered.length ? <Empty title={t('暂时没有匹配的商品','No matches just yet')} text={t('换个关键词、分类或切换库存筛选试试。','Try another search, category or stock filter.')}/> : <>
           <div className="product-grid">{visibleProducts.map(p=>{
             const cat = categoryMap.get(p.category);
-            return <article className={`product-card ${!p.inStock?'out-of-stock':''}`} key={p.id}><div className="product-card-top"><ProductIcon brand={p.brand} name={`${p.name} ${p.nameEn}`}/><span className={`delivery-label ${p.delivery==='instant'?'instant':''}`}>{p.delivery==='instant'?<Zap size={12}/>:<PackageCheck size={12}/>} {p.delivery==='instant'?t('自动交付','Auto delivery'):p.requiresEmail?t('邮箱开通','Email activation'):t('人工交付','Manual delivery')}</span></div><div className="product-card-body"><span className="product-category">{t(cat?.zh??'数字商品',cat?.en??'Digital product')}{p.demo&&<span> · {t('演示','DEMO')}</span>}</span><h3>{lang==='en'&&p.nameEn?p.nameEn:p.name}</h3><p>{lang==='en'?(p.descriptionEn||t('','See product details for the subscription terms, region and delivery requirements.')):p.description}</p></div><div className="product-card-footer"><div className="price"><span>{lang==='en'?'$':'¥'}</span>{money(p.priceCents,lang,rate)}<small>{t('元','USD')}</small></div><button type="button" className="buy-button" disabled={!p.inStock} onClick={()=>onBuy(p)}>{p.inStock?t('选购','Get it'):t('补货中','Sold out')}{p.inStock&&<ArrowRight size={15}/>}</button></div></article>;
+            return <article className={`product-card ${p.inStock?'in-stock':'out-of-stock'}`} key={p.id}><div className="product-card-top"><ProductIcon brand={p.brand} name={`${p.name} ${p.nameEn}`}/><div className="product-card-badges"><span className={`card-stock-badge ${p.inStock?'in':'out'}`}><i className="stock-dot"/>{p.inStock?(p.stock!==null&&p.stock>0?t(`现货 · 剩 ${p.stock}`,`In stock · ${p.stock}`):t('现货可购','In stock')):t('暂时缺货','Sold out')}</span><span className={`delivery-label ${p.delivery==='instant'?'instant':''}`}>{p.delivery==='instant'?<Zap size={12}/>:<PackageCheck size={12}/>} {p.delivery==='instant'?t('自动交付','Auto delivery'):p.requiresEmail?t('邮箱开通','Email activation'):t('人工交付','Manual delivery')}</span></div></div><div className="product-card-body"><span className="product-category">{t(cat?.zh??'数字商品',cat?.en??'Digital product')}{p.demo&&<span> · {t('演示','DEMO')}</span>}</span><h3>{lang==='en'&&p.nameEn?p.nameEn:p.name}</h3><p>{lang==='en'?(p.descriptionEn||t('','See product details for the subscription terms, region and delivery requirements.')):p.description}</p></div><div className="product-card-footer"><div className="price"><span>{lang==='en'?'$':'¥'}</span>{money(p.priceCents,lang,rate)}<small>{t('元','USD')}</small></div><button type="button" className="buy-button" disabled={!p.inStock} onClick={()=>onBuy(p)}>{p.inStock?t('选购','Get it'):t('补货中','Sold out')}{p.inStock&&<ArrowRight size={15}/>}</button></div></article>;
           })}</div>
           {visibleCount < filtered.length && <div className="catalog-more" ref={loadMoreRef}>
             <button type="button" className="button secondary" onClick={()=>setVisibleCount(c=>Math.min(filtered.length,c+PAGE_SIZE*2))}>{t(`加载更多商品（已显示 ${visibleProducts.length} / ${filtered.length} 件）`,`Load more (${visibleProducts.length} / ${filtered.length} shown)`)}</button>

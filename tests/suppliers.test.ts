@@ -230,6 +230,16 @@ test("catalog style detection and search prioritize primary brand over subtitle 
 
   const aliasResults = searchAndSortProducts(idx, { query: "剪映 1个月", category: "streaming" });
   assert.deepEqual(aliasResults.map(p => p.id), ["4"]);
+
+  const mixedStock = [
+    { ...sample[0], id: "out-cheap", priceCents: 100, inStock: false },
+    { ...sample[1], id: "in-mid", priceCents: 2000, inStock: true },
+    { ...sample[2], id: "in-cheap", priceCents: 500, inStock: true },
+  ] as any[];
+  const mixedIdx = buildSearchIndex(mixedStock);
+  assert.deepEqual(searchAndSortProducts(mixedIdx, { query: "", stockFilter: "in" }).map(p => p.id), ["in-mid", "in-cheap"]);
+  assert.deepEqual(searchAndSortProducts(mixedIdx, { query: "", stockFilter: "out" }).map(p => p.id), ["out-cheap"]);
+  assert.deepEqual(searchAndSortProducts(mixedIdx, { query: "", sort: "low" }).map(p => p.id), ["in-cheap", "in-mid", "out-cheap"]);
 });
 
 test("admin can toggle suppliers, batch publish/hide products, and save custom store settings", async t => {
