@@ -220,7 +220,7 @@ export class Catalog {
       names.set("prodseller", psName);
     }
     const stockMap = new Map(this.store.all<{product_id:string;n:number}>('SELECT product_id, COUNT(*) AS n FROM inventory WHERE order_id IS NULL GROUP BY product_id').map(r => [r.product_id, r.n]));
-    const soldMap = new Map(this.store.all<{product_id:string;n:number}>("SELECT product_id, SUM(quantity) AS n FROM orders WHERE payment_status='paid' GROUP BY product_id").map(r => [r.product_id, r.n]));
+    const soldMap = new Map(this.store.all<{product_id:string;n:number}>("SELECT product_id, SUM(quantity) AS n FROM orders WHERE payment_status='paid' AND payment_mode!='demo' GROUP BY product_id").map(r => [r.product_id, r.n]));
     return this.store.all<ProductRow>(`SELECT * FROM products WHERE (provider='local' OR (provider='prodseller' AND source_mode=? AND ?=1) OR (provider!='prodseller' AND provider!='local' AND source_mode='live' AND EXISTS (SELECT 1 FROM supplier_connections s WHERE s.id=products.provider ${admin ? '' : 'AND s.enabled=1'}))) ${admin ? '' : 'AND enabled=1'} ORDER BY rowid`, this.config.PRODSELLER_MODE, +showSupplier).map(p => ({ ...this.publicProduct(p, stockMap, soldMap), ...(admin ? { provider: p.provider, providerName:names.get(p.provider), sourceId: p.source_id, enabled: !!p.enabled, costUsdt: p.cost_usdt } : {}) }));
   }
   create(input: z.infer<typeof customProductSchema>) {
