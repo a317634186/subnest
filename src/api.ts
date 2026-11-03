@@ -5,7 +5,7 @@ export interface Product {
   maxQuantity: number; providerName?: string; inputKind?: '' | 'pixel' | 'sheerid'; updatedAt?: string; soldCount?: number;
 }
 export interface Channel { id: string; enabled: boolean; available: boolean; instructions: string; instructionsEn: string; qrUrl: string }
-export interface ShopConfig { storeName: string; demo: boolean; supplierDemo: boolean; currency: string; exchangeRate?: number; supportEmail: string; supportWechat?: string; supportTelegram?: string; announcementZh?: string; announcementEn?: string; alipayGateway?: string; confirmedOrderCount?: number; channels: Channel[] }
+export interface ShopConfig { storeName: string; demo: boolean; supplierDemo: boolean; currency: string; exchangeRate?: number; supportEmail: string; supportWechat?: string; supportTelegram?: string; announcementZh?: string; announcementEn?: string; alipayGateway?: string; channels: Channel[] }
 export const defaultSupport = { email: 'support@example.com', wechat: 'support_wechat', telegram: 't.me/support_contact', telegramUrl: 'https://t.me/support_contact' };
 export interface Order {
   id: string; productName: string; quantity: number; totalCents: number; status: string; paymentStatus: string;

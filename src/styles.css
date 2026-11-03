@@ -65,13 +65,6 @@ a.contact-card:hover{border-color:var(--green);transform:translateY(-1px)}
 .variant-select select{width:100%;padding:8px 10px;font-size:13px}
 .hero{min-height:470px}
 .hero-copy>p{font-size:14px;color:#536357;line-height:1.8}
-.hero-featured{margin-top:15px;max-width:500px}
-.hero-featured>strong{display:block;margin-bottom:7px;color:#3f5c45;font-size:12px}
-.hero-featured>div{display:flex;gap:7px;overflow:auto;padding:1px 1px 5px}
-.hero-featured button{display:flex;align-items:center;gap:6px;min-width:0;padding:6px 8px;border:1px solid #dfe8d7;border-radius:10px;background:#fffdf9;color:#304337;text-align:left}
-.hero-featured button .product-icon{width:25px;height:25px;flex:0 0 25px}
-.hero-featured button>span:nth-child(2){max-width:105px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px}
-.hero-featured button b{color:#185b44;font-size:12px;white-space:nowrap}
 .menu-toggle{display:none;border:0;background:transparent;padding:8px;color:#234334}
 .legal-page{max-width:900px;min-height:65vh;padding-top:55px;padding-bottom:70px}
 .legal-page>h1{margin:8px 0 28px;font-size:32px;color:#1e382a}
@@ -120,15 +113,8 @@ input::placeholder,textarea::placeholder{color:#66746a}
 .how-section{padding-top:36px;padding-bottom:36px}
 .how-section h2{font-size:27px}
 .steps{gap:28px}
-.hero-featured button{min-height:44px}
 .empty p{color:#536157}
 .menu-toggle{min-width:44px;min-height:44px}
-.trust-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:22px 0 8px;padding:18px 20px;border:1px solid #e2eadc;border-radius:16px;background:#f8faf5}
-.trust-strip>div{display:flex;align-items:center;gap:11px;min-width:0}
-.trust-strip svg{width:21px;height:21px;color:#39714d;flex:none}
-.trust-strip strong,.trust-strip small{display:block}
-.trust-strip strong{font-size:14px;color:#244631}
-.trust-strip small{margin-top:3px;font-size:12px;color:#536157}
 .order-captcha{display:flex;align-items:center;gap:8px;white-space:nowrap}
 .order-captcha span{font-size:13px;color:#394a3c}
 .order-captcha input{width:72px;min-height:44px}
@@ -164,8 +150,6 @@ input::placeholder,textarea::placeholder{color:#66746a}
   .legal-page{padding-top:32px;padding-bottom:45px}
   .legal-page>h1{font-size:27px}
   .legal-steps section{padding:16px}
-  .hero-featured{margin-top:12px}
-  .hero-featured button{min-width:170px}
   .hero h1{font-size:27px;line-height:1.45}
   .hero-copy>p{font-size:14px}
   .benefits small,.step p,.faq-list details>p{font-size:12px}
@@ -173,7 +157,6 @@ input::placeholder,textarea::placeholder{color:#66746a}
   .product-card-body p{font-size:12px}
   .product-card-footer .buy-button{min-height:44px}
   .footer-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-  .trust-strip{grid-template-columns:1fr;padding:16px}
   .order-captcha{width:100%;justify-content:flex-start}
   .order-captcha input{flex:1;max-width:100px}
 }
